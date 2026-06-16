@@ -50,6 +50,7 @@ export default function OTPScreen({ navigation, route }: Props) {
               Sent to{" "}
               <Text style={styles.phone}>{route.params.phone}</Text>
             </Text>
+            <Text style={styles.hint}>Enter any 6 digits to continue</Text>
           </View>
 
           {/* OTP boxes */}
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
   },
   subtitle: { fontSize: 15, color: Colors.text.muted },
   phone: { color: Colors.text.primary, fontWeight: "600" },
+  hint: { fontSize: 12, color: `${Colors.brand.pink}99`, fontStyle: "italic" },
 
   codeRow: {
     flexDirection: "row",

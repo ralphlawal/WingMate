@@ -24,7 +24,7 @@ export default function PhoneScreen({ navigation }: Props) {
   const [focused, setFocused] = useState(false);
   const countryCode = "+353";
 
-  const isValid = phone.replace(/\D/g, "").length >= 10;
+  const isValid = phone.replace(/\D/g, "").length >= 6;
 
   return (
     <SafeAreaView style={styles.safe}>
