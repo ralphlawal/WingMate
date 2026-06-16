@@ -139,19 +139,18 @@ const styles = StyleSheet.create({
 
   codeRow: {
     flexDirection: "row",
-    gap: 10,
     justifyContent: "space-between",
     marginBottom: 20,
   },
   codeBox: {
-    flex: 1,
-    height: 62,
+    width: 44,
+    height: 56,
     backgroundColor: Colors.bg.card,
     borderRadius: 14,
     borderWidth: 1.5,
     borderColor: Colors.border.default,
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "700",
     color: Colors.text.primary,
   },
