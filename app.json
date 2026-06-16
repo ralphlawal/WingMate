@@ -26,6 +26,9 @@
       "expo-asset",
       "expo-font"
     ],
+    "experiments": {
+      "baseUrl": "/WingMate"
+    },
     "extra": {
       "eas": {
         "projectId": "9de526be-9d95-4250-959e-659b9eac0beb"
