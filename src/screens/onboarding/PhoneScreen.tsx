@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   link: { color: Colors.brand.pink, fontWeight: "600" },
   footer: {
-    marginTop: "auto",
+    marginTop: 40,
     paddingTop: 16,
   },
 });

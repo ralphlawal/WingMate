@@ -178,5 +178,5 @@ const styles = StyleSheet.create({
   resendText: { color: Colors.text.muted, fontSize: 14 },
   resendLink: { color: Colors.brand.pink, fontWeight: "600" },
 
-  footer: { marginTop: "auto" },
+  footer: { marginTop: 40 },
 });
