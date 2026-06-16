@@ -34,6 +34,7 @@ export default function NameScreen({ navigation }: Props) {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
+        style={{ flex: 1, width: "100%" }}
       >
           {/* Progress */}
           <View style={styles.progress}>

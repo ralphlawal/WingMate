@@ -46,6 +46,7 @@ export default function OTPScreen({ navigation, route }: Props) {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
       >
         <View style={styles.iconWrap}>
           <Text style={styles.emoji}>🔐</Text>
@@ -105,6 +106,7 @@ export default function OTPScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
+  scrollView: { flex: 1, width: "100%" },
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 24,

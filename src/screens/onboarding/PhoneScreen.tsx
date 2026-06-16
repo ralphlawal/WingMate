@@ -33,6 +33,7 @@ export default function PhoneScreen({ navigation }: Props) {
           contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
         >
           <View style={styles.glow} />
 
@@ -89,6 +90,7 @@ export default function PhoneScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
+  scrollView: { flex: 1, width: "100%" },
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 24,
