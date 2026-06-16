@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 
@@ -8,8 +9,7 @@ import MainNavigator from "./MainNavigator";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
-  // Toggle this to switch between onboarding and main app during development
-  const [isOnboarded] = useState(false);
+  const [isOnboarded] = useState(Platform.OS === "web");
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
