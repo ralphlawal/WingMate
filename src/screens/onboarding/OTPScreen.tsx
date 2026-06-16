@@ -5,8 +5,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -30,6 +30,10 @@ export default function OTPScreen({ navigation, route }: Props) {
     if (!digit && index > 0) inputs.current[index - 1]?.focus();
   };
 
+  const fillDemo = () => {
+    setCode(["1", "2", "3", "4", "5", "6"]);
+  };
+
   const isFilled = code.every((d) => d !== "");
 
   return (
@@ -38,60 +42,62 @@ export default function OTPScreen({ navigation, route }: Props) {
         <Ionicons name="chevron-back" size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <View style={styles.iconWrap}>
-            <Text style={styles.emoji}>🔐</Text>
-          </View>
-
-          <View style={styles.textBlock}>
-            <Text style={styles.title}>Enter the code</Text>
-            <Text style={styles.subtitle}>
-              Sent to{" "}
-              <Text style={styles.phone}>{route.params.phone}</Text>
-            </Text>
-            <Text style={styles.hint}>Enter any 6 digits to continue</Text>
-          </View>
-
-          {/* OTP boxes */}
-          <View style={styles.codeRow}>
-            {code.map((digit, i) => (
-              <TextInput
-                key={i}
-                ref={(el) => {
-                  inputs.current[i] = el;
-                }}
-                value={digit}
-                onChangeText={(t) => handleChange(t, i)}
-                keyboardType="number-pad"
-                maxLength={1}
-                autoFocus={i === 0}
-                style={[styles.codeBox, digit ? styles.codeBoxFilled : null]}
-                selectionColor={Colors.brand.pink}
-              />
-            ))}
-          </View>
-
-          <TouchableOpacity style={styles.resend}>
-            <Text style={styles.resendText}>
-              Didn't get it?{" "}
-              <Text style={styles.resendLink}>Resend code</Text>
-            </Text>
-          </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <Button
-              label="Verify & Continue"
-              onPress={() => {
-                if (isFilled) navigation.navigate("Name");
-              }}
-              disabled={!isFilled}
-              fullWidth
-              size="lg"
-            />
-          </View>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.iconWrap}>
+          <Text style={styles.emoji}>🔐</Text>
         </View>
-      </TouchableWithoutFeedback>
+
+        <View style={styles.textBlock}>
+          <Text style={styles.title}>Enter the code</Text>
+          <Text style={styles.subtitle}>
+            Sent to{" "}
+            <Text style={styles.phone}>{route.params.phone}</Text>
+          </Text>
+        </View>
+
+        <View style={styles.codeRow}>
+          {code.map((digit, i) => (
+            <TextInput
+              key={i}
+              ref={(el) => { inputs.current[i] = el; }}
+              value={digit}
+              onChangeText={(t) => handleChange(t, i)}
+              keyboardType="number-pad"
+              maxLength={1}
+              autoFocus={i === 0 && Platform.OS !== "web"}
+              style={[styles.codeBox, digit ? styles.codeBoxFilled : null]}
+              selectionColor={Colors.brand.pink}
+            />
+          ))}
+        </View>
+
+        {Platform.OS === "web" && (
+          <TouchableOpacity style={styles.demoBtn} onPress={fillDemo}>
+            <Text style={styles.demoBtnText}>Tap to fill demo code</Text>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity style={styles.resend}>
+          <Text style={styles.resendText}>
+            Didn't get it?{" "}
+            <Text style={styles.resendLink}>Resend code</Text>
+          </Text>
+        </TouchableOpacity>
+
+        <View style={styles.footer}>
+          <Button
+            label="Verify & Continue"
+            onPress={() => { if (isFilled) navigation.navigate("Name"); }}
+            disabled={!isFilled}
+            fullWidth
+            size="lg"
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -99,7 +105,12 @@ export default function OTPScreen({ navigation, route }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 20 },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
 
   iconWrap: {
     width: 72,
@@ -123,13 +134,12 @@ const styles = StyleSheet.create({
   },
   subtitle: { fontSize: 15, color: Colors.text.muted },
   phone: { color: Colors.text.primary, fontWeight: "600" },
-  hint: { fontSize: 12, color: `${Colors.brand.pink}99`, fontStyle: "italic" },
 
   codeRow: {
     flexDirection: "row",
     gap: 10,
     justifyContent: "space-between",
-    marginBottom: 28,
+    marginBottom: 20,
   },
   codeBox: {
     flex: 1,
@@ -148,14 +158,25 @@ const styles = StyleSheet.create({
     backgroundColor: `${Colors.brand.pink}12`,
   },
 
-  resend: { alignItems: "center" },
+  demoBtn: {
+    alignSelf: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    backgroundColor: `${Colors.brand.pink}15`,
+    borderWidth: 1,
+    borderColor: `${Colors.brand.pink}30`,
+    marginBottom: 16,
+  },
+  demoBtnText: {
+    color: Colors.brand.pink,
+    fontSize: 13,
+    fontWeight: "600",
+  },
+
+  resend: { alignItems: "center", marginBottom: 40 },
   resendText: { color: Colors.text.muted, fontSize: 14 },
   resendLink: { color: Colors.brand.pink, fontWeight: "600" },
 
-  footer: {
-    position: "absolute",
-    bottom: 36,
-    left: 24,
-    right: 24,
-  },
+  footer: { marginTop: "auto" },
 });

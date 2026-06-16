@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { OnboardingStackParamList } from "../types";
 
@@ -14,7 +15,7 @@ const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
 export default function OnboardingNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: Platform.OS === "web" ? "none" : "slide_from_right" }}>
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Phone" component={PhoneScreen} />
       <Stack.Screen name="OTP" component={OTPScreen} />

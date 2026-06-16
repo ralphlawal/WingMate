@@ -3,13 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   TextInput,
   Image,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -32,11 +30,11 @@ export default function NameScreen({ navigation }: Props) {
         <Ionicons name="chevron-back" size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
           {/* Progress */}
           <View style={styles.progress}>
             {[1, 2, 3, 4].map((step) => (
@@ -75,7 +73,7 @@ export default function NameScreen({ navigation }: Props) {
             placeholder="First name"
             placeholderTextColor={Colors.text.muted}
             autoCapitalize="words"
-            autoFocus
+            autoFocus={Platform.OS !== "web"}
             maxLength={30}
             style={[styles.input, focused && styles.inputFocused]}
             onFocus={() => setFocused(true)}
@@ -92,8 +90,7 @@ export default function NameScreen({ navigation }: Props) {
               size="lg"
             />
           </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -101,7 +98,7 @@ export default function NameScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
+  container: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 8, paddingBottom: 40 },
 
   progress: { flexDirection: "row", gap: 6, marginBottom: 36 },
   progressBar: {
@@ -179,9 +176,6 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    position: "absolute",
-    bottom: 36,
-    left: 24,
-    right: 24,
+    marginTop: 32,
   },
 });

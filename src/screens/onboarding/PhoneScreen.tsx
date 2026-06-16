@@ -3,15 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { OnboardingStackParamList } from "../../types";
 import { Colors } from "../../theme";
@@ -24,69 +23,65 @@ export default function PhoneScreen({ navigation }: Props) {
   const [focused, setFocused] = useState(false);
   const countryCode = "+353";
 
-  const isValid = phone.replace(/\D/g, "").length >= 6;
+  const digits = phone.replace(/\D/g, "");
+  const isValid = digits.length >= 6;
 
   return (
     <SafeAreaView style={styles.safe}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
+      <TouchableWithoutFeedback onPress={Platform.OS !== "web" ? Keyboard.dismiss : undefined}>
+        <ScrollView
+          contentContainerStyle={styles.scroll}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          {/* Top glow */}
           <View style={styles.glow} />
 
-          <View style={styles.content}>
-            <View style={styles.iconWrap}>
-              <Text style={styles.emoji}>📱</Text>
-            </View>
-
-            <View style={styles.textBlock}>
-              <Text style={styles.title}>What's your number?</Text>
-              <Text style={styles.subtitle}>We'll send a code.</Text>
-            </View>
-
-            {/* Phone input row */}
-            <View style={[styles.inputRow, focused && styles.inputRowFocused]}>
-              <TouchableOpacity style={styles.countryPicker}>
-                <Text style={styles.flag}>🇮🇪</Text>
-                <Text style={styles.countryCode}>{countryCode}</Text>
-              </TouchableOpacity>
-              <View style={styles.inputDivider} />
-              <TextInput
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="083 000 0000"
-                placeholderTextColor={Colors.text.muted}
-                keyboardType="phone-pad"
-                autoFocus
-                maxLength={14}
-                style={styles.phoneInput}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                selectionColor={Colors.brand.pink}
-              />
-            </View>
-
-            <Text style={styles.legal}>
-              By continuing you agree to our{" "}
-              <Text style={styles.link}>Terms</Text> &{" "}
-              <Text style={styles.link}>Privacy Policy</Text>
-            </Text>
+          <View style={styles.iconWrap}>
+            <Text style={styles.emoji}>📱</Text>
           </View>
+
+          <View style={styles.textBlock}>
+            <Text style={styles.title}>What's your number?</Text>
+            <Text style={styles.subtitle}>We'll send a code.</Text>
+          </View>
+
+          <View style={[styles.inputRow, focused && styles.inputRowFocused]}>
+            <TouchableOpacity style={styles.countryPicker}>
+              <Text style={styles.flag}>🇮🇪</Text>
+              <Text style={styles.countryCode}>{countryCode}</Text>
+            </TouchableOpacity>
+            <View style={styles.inputDivider} />
+            <TextInput
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="083 000 0000"
+              placeholderTextColor={Colors.text.muted}
+              keyboardType="phone-pad"
+              autoFocus={Platform.OS !== "web"}
+              maxLength={14}
+              style={styles.phoneInput}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              selectionColor={Colors.brand.pink}
+            />
+          </View>
+
+          <Text style={styles.legal}>
+            By continuing you agree to our{" "}
+            <Text style={styles.link}>Terms</Text> &{" "}
+            <Text style={styles.link}>Privacy Policy</Text>
+          </Text>
 
           <View style={styles.footer}>
             <Button
               label="Send Code"
-              onPress={() => {
-                if (isValid) navigation.navigate("OTP", { phone: `${countryCode}${phone}` });
-              }}
+              onPress={() => navigation.navigate("OTP", { phone: `${countryCode}${phone}` })}
               disabled={!isValid}
               fullWidth
               size="lg"
             />
           </View>
-        </KeyboardAvoidingView>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
@@ -94,7 +89,12 @@ export default function PhoneScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
-  container: { flex: 1, paddingHorizontal: 24 },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 48,
+    paddingBottom: 40,
+  },
   glow: {
     position: "absolute",
     width: 260,
@@ -104,11 +104,6 @@ const styles = StyleSheet.create({
     opacity: 0.06,
     top: -60,
     right: -60,
-  },
-  content: {
-    flex: 1,
-    paddingTop: 48,
-    gap: 0,
   },
   iconWrap: {
     width: 72,
@@ -177,10 +172,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "center",
     lineHeight: 18,
+    marginBottom: 32,
   },
   link: { color: Colors.brand.pink, fontWeight: "600" },
   footer: {
-    paddingBottom: 40,
+    marginTop: "auto",
     paddingTop: 16,
   },
 });
