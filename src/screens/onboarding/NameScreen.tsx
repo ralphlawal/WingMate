@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TextInput,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,6 +23,7 @@ type Props = NativeStackScreenProps<OnboardingStackParamList, "Name">;
 export default function NameScreen({ navigation }: Props) {
   const [name, setName] = useState("");
   const [focused, setFocused] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(null);
   const isValid = name.trim().length >= 2;
 
   return (
@@ -45,9 +47,19 @@ export default function NameScreen({ navigation }: Props) {
             ))}
           </View>
 
-          <View style={styles.iconWrap}>
-            <Text style={styles.emoji}>👋</Text>
-          </View>
+          <TouchableOpacity style={styles.avatarWrap} activeOpacity={0.8}>
+            {photo ? (
+              <Image source={{ uri: photo }} style={styles.avatarImage} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Ionicons name="person" size={36} color={Colors.text.muted} />
+              </View>
+            )}
+            <View style={styles.cameraBtn}>
+              <Ionicons name="camera" size={14} color="#fff" />
+            </View>
+            <Text style={styles.avatarLabel}>Add photo</Text>
+          </TouchableOpacity>
 
           <View style={styles.textBlock}>
             <Text style={styles.title}>What do people call you?</Text>
@@ -100,18 +112,46 @@ const styles = StyleSheet.create({
   },
   progressBarActive: { backgroundColor: Colors.brand.pink },
 
-  iconWrap: {
-    width: 72,
-    height: 72,
-    borderRadius: 22,
-    backgroundColor: `${Colors.brand.pink}15`,
-    borderWidth: 1,
-    borderColor: `${Colors.brand.pink}25`,
+  avatarWrap: {
+    alignItems: "center",
+    marginBottom: 28,
+  },
+  avatarPlaceholder: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: Colors.bg.card,
+    borderWidth: 2,
+    borderColor: Colors.border.default,
+    borderStyle: "dashed",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 24,
   },
-  emoji: { fontSize: 36 },
+  avatarImage: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+  },
+  cameraBtn: {
+    position: "absolute",
+    bottom: 24,
+    right: "50%",
+    marginRight: -40,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: Colors.brand.pink,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: Colors.bg.primary,
+  },
+  avatarLabel: {
+    marginTop: 8,
+    fontSize: 13,
+    color: Colors.brand.pink,
+    fontWeight: "600",
+  },
 
   textBlock: { gap: 10, marginBottom: 32 },
   title: {

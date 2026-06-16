@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<OnboardingStackParamList, "Phone">;
 export default function PhoneScreen({ navigation }: Props) {
   const [phone, setPhone] = useState("");
   const [focused, setFocused] = useState(false);
-  const countryCode = "+1";
+  const countryCode = "+353";
 
   const isValid = phone.replace(/\D/g, "").length >= 10;
 
@@ -49,14 +49,14 @@ export default function PhoneScreen({ navigation }: Props) {
             {/* Phone input row */}
             <View style={[styles.inputRow, focused && styles.inputRowFocused]}>
               <TouchableOpacity style={styles.countryPicker}>
-                <Text style={styles.flag}>🇺🇸</Text>
+                <Text style={styles.flag}>🇮🇪</Text>
                 <Text style={styles.countryCode}>{countryCode}</Text>
               </TouchableOpacity>
               <View style={styles.inputDivider} />
               <TextInput
                 value={phone}
                 onChangeText={setPhone}
-                placeholder="(555) 000-0000"
+                placeholder="083 000 0000"
                 placeholderTextColor={Colors.text.muted}
                 keyboardType="phone-pad"
                 autoFocus

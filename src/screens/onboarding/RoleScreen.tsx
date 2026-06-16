@@ -15,12 +15,11 @@ import { Button } from "../../components/ui";
 
 type Props = NativeStackScreenProps<OnboardingStackParamList, "Role">;
 
-const roles: UserRole[] = ["single", "wing", "taken"];
+const roles: UserRole[] = ["single", "wing"];
 
-const ROLE_DETAIL: Record<UserRole, { tip: string }> = {
+const ROLE_DETAIL: Partial<Record<UserRole, { tip: string }>> = {
   single: { tip: "Show up on map. Get signals. Match at venues." },
   wing: { tip: "Help a friend meet someone tonight. Play cupid." },
-  taken: { tip: "Here for vibes. Matchmake from the sidelines." },
 };
 
 export default function RoleScreen({ navigation }: Props) {
@@ -46,14 +45,14 @@ export default function RoleScreen({ navigation }: Props) {
         <View style={styles.textBlock}>
           <Text style={styles.title}>Who are you tonight?</Text>
           <Text style={styles.subtitle}>
-            You can change this any time before heading out.
+            You can change this any time.
           </Text>
         </View>
 
         <View style={styles.cards}>
           {roles.map((role) => {
             const config = RoleConfig[role];
-            const detail = ROLE_DETAIL[role];
+            const detail = ROLE_DETAIL[role] ?? { tip: "" };
             const isSelected = selected === role;
 
             return (
