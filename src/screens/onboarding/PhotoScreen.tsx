@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,7 +19,8 @@ import { Button } from "../../components/ui";
 type Props = NativeStackScreenProps<OnboardingStackParamList, "Photo">;
 
 const { width } = Dimensions.get("window");
-const PHOTO_SIZE = width - 48;
+// Cap at 480 for web so the photo doesn't balloon on desktop
+const PHOTO_SIZE = Math.min(width, 480) - 48;
 
 const MOCK_PHOTO = "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600";
 
@@ -31,7 +33,12 @@ export default function PhotoScreen({ navigation }: Props) {
         <Ionicons name="chevron-back" size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
-      <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         {/* Progress */}
         <View style={styles.progress}>
           {[1, 2, 3, 4].map((step) => (
@@ -94,7 +101,7 @@ export default function PhotoScreen({ navigation }: Props) {
             <Text style={styles.skipText}>Skip for now</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -102,7 +109,13 @@ export default function PhotoScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
+  scrollView: { flex: 1, width: "100%" },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+    paddingBottom: 48,
+  },
 
   progress: { flexDirection: "row", gap: 6, marginBottom: 28 },
   progressBar: { flex: 1, height: 4, borderRadius: 2, backgroundColor: Colors.border.subtle },
@@ -114,7 +127,7 @@ const styles = StyleSheet.create({
 
   slot: {
     width: PHOTO_SIZE,
-    height: PHOTO_SIZE * 1.15,
+    height: PHOTO_SIZE * 1.1,
     borderRadius: 24,
     overflow: "hidden",
     backgroundColor: Colors.bg.card,
@@ -125,6 +138,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     alignSelf: "center",
+    marginBottom: 28,
   },
   photo: { width: "100%", height: "100%", position: "absolute" },
   slotGradient: {
@@ -171,7 +185,7 @@ const styles = StyleSheet.create({
   emptyTitle: { fontSize: 17, fontWeight: "600", color: Colors.text.secondary },
   emptyHint: { fontSize: 13, color: Colors.text.muted },
 
-  footer: { position: "absolute", bottom: 36, left: 24, right: 24, gap: 10 },
-  skipBtn: { alignItems: "center", paddingTop: 4 },
+  footer: { gap: 10 },
+  skipBtn: { alignItems: "center", paddingVertical: 12 },
   skipText: { color: Colors.text.muted, fontSize: 14, fontWeight: "500" },
 });

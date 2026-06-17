@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   body: { flex: 1, marginTop: -32 },
-  bodyContent: { paddingBottom: 60 },
+  bodyContent: { paddingBottom: 120 },
 
   venueHeader: {
     flexDirection: "row",

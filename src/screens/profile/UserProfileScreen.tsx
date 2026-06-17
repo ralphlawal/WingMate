@@ -122,7 +122,7 @@ export default function UserProfileScreen({ navigation, route }: Props) {
         <View style={styles.chipsRow}>
           <View style={styles.chip}>
             <Ionicons name="location-outline" size={13} color={Colors.text.muted} />
-            <Text style={styles.chipText}>The Grotto • 0.2mi away</Text>
+            <Text style={styles.chipText}>Café en Seine • nearby</Text>
           </View>
           <View style={styles.chip}>
             <View style={styles.chipDot} />

@@ -4,11 +4,8 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -41,84 +38,84 @@ export default function BioScreen({ navigation }: Props) {
         <Ionicons name="chevron-back" size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
-          {/* Progress */}
-          <View style={styles.progress}>
-            {[1, 2, 3, 4].map((step) => (
-              <View key={step} style={[styles.progressBar, styles.progressBarActive]} />
-            ))}
-          </View>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        {/* Progress */}
+        <View style={styles.progress}>
+          {[1, 2, 3, 4].map((step) => (
+            <View key={step} style={[styles.progressBar, styles.progressBarActive]} />
+          ))}
+        </View>
 
-          <View style={styles.textBlock}>
-            <Text style={styles.title}>Tell them something real</Text>
-            <Text style={styles.subtitle}>
-              What would you want someone to know before saying hi?
-            </Text>
-          </View>
+        <View style={styles.textBlock}>
+          <Text style={styles.title}>Tell them something real</Text>
+          <Text style={styles.subtitle}>
+            What would you want someone to know before saying hi?
+          </Text>
+        </View>
 
-          {/* Text area */}
-          <View style={[styles.textAreaWrap, focused && styles.textAreaFocused]}>
-            <TextInput
-              value={bio}
-              onChangeText={(t) => t.length <= MAX && setBio(t)}
-              placeholder="Write something that sounds like you..."
-              placeholderTextColor={Colors.text.muted}
-              multiline
-              style={styles.textArea}
-              autoFocus
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              selectionColor={Colors.brand.pink}
-            />
-            <Text
-              style={[
-                styles.counter,
-                remaining < 20 && { color: Colors.brand.pink },
-              ]}
-            >
-              {remaining}
-            </Text>
-          </View>
+        {/* Text area */}
+        <View style={[styles.textAreaWrap, focused && styles.textAreaFocused]}>
+          <TextInput
+            value={bio}
+            onChangeText={(t) => t.length <= MAX && setBio(t)}
+            placeholder="Write something that sounds like you..."
+            placeholderTextColor={Colors.text.muted}
+            multiline
+            style={styles.textArea}
+            autoFocus={Platform.OS !== "web"}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            selectionColor={Colors.brand.pink}
+          />
+          <Text
+            style={[
+              styles.counter,
+              remaining < 20 && { color: Colors.brand.pink },
+            ]}
+          >
+            {remaining}
+          </Text>
+        </View>
 
-          {/* Prompt chips */}
-          <View style={styles.promptsHeader}>
-            <Ionicons name="sparkles" size={13} color={Colors.brand.teal} />
-            <Text style={styles.promptsLabel}>Need a nudge?</Text>
-          </View>
+        {/* Prompt chips */}
+        <View style={styles.promptsHeader}>
+          <Ionicons name="sparkles" size={13} color={Colors.brand.teal} />
+          <Text style={styles.promptsLabel}>Need a nudge?</Text>
+        </View>
 
-          <View style={styles.prompts}>
-            {PROMPTS.map((prompt) => (
-              <TouchableOpacity
-                key={prompt}
-                style={styles.promptChip}
-                onPress={() => setBio(prompt + " ")}
-              >
-                <Text style={styles.promptText}>{prompt}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <View style={styles.footer}>
-            <Button
-              label="Let's go 🎉"
-              onPress={() => (navigation as any).getParent()?.navigate("Main")}
-              disabled={!isValid}
-              fullWidth
-              size="lg"
-            />
+        <View style={styles.prompts}>
+          {PROMPTS.map((prompt) => (
             <TouchableOpacity
-              style={styles.skipBtn}
-              onPress={() => (navigation as any).getParent()?.navigate("Main")}
+              key={prompt}
+              style={styles.promptChip}
+              onPress={() => setBio(prompt + " ")}
             >
-              <Text style={styles.skipText}>Skip for now</Text>
+              <Text style={styles.promptText}>{prompt}</Text>
             </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+          ))}
+        </View>
+
+        <View style={styles.footer}>
+          <Button
+            label="Let's go 🎉"
+            onPress={() => (navigation as any).getParent()?.navigate("Main")}
+            disabled={!isValid}
+            fullWidth
+            size="lg"
+          />
+          <TouchableOpacity
+            style={styles.skipBtn}
+            onPress={() => (navigation as any).getParent()?.navigate("Main")}
+          >
+            <Text style={styles.skipText}>Skip for now</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -126,7 +123,13 @@ export default function BioScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
+  scrollView: { flex: 1, width: "100%" },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+    paddingBottom: 48,
+  },
 
   progress: { flexDirection: "row", gap: 6, marginBottom: 32 },
   progressBar: {
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   promptsLabel: { color: Colors.brand.teal, fontSize: 12, fontWeight: "600" },
-  prompts: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  prompts: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 36 },
   promptChip: {
     backgroundColor: Colors.bg.elevated,
     borderRadius: 20,
@@ -192,13 +195,7 @@ const styles = StyleSheet.create({
   },
   promptText: { color: Colors.text.secondary, fontSize: 12, fontWeight: "500" },
 
-  footer: {
-    position: "absolute",
-    bottom: 36,
-    left: 24,
-    right: 24,
-    gap: 10,
-  },
-  skipBtn: { alignItems: "center", paddingTop: 4 },
+  footer: { gap: 10 },
+  skipBtn: { alignItems: "center", paddingVertical: 12 },
   skipText: { color: Colors.text.muted, fontSize: 14, fontWeight: "500" },
 });

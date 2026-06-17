@@ -68,7 +68,7 @@ export default function MyProfileScreen({ navigation }: Props) {
               </Text>
               <View style={styles.locationRow}>
                 <Ionicons name="location" size={12} color={Colors.brand.pink} />
-                <Text style={styles.locationText}>Checked in · The Grotto</Text>
+                <Text style={styles.locationText}>Checked in · Café en Seine</Text>
               </View>
             </View>
           </View>
@@ -107,7 +107,7 @@ export default function MyProfileScreen({ navigation }: Props) {
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.visLabel}>Visible on map</Text>
-              <Text style={styles.visSub}>Anyone at The Grotto can see you</Text>
+              <Text style={styles.visSub}>Anyone at Café en Seine can see you</Text>
             </View>
             <View style={styles.visActive}>
               <View style={styles.visActiveDot} />

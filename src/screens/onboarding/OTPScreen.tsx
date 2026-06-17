@@ -140,10 +140,13 @@ const styles = StyleSheet.create({
   codeRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 6,
     marginBottom: 20,
   },
   codeBox: {
-    width: 44,
+    flex: 1,
+    maxWidth: 52,
+    minWidth: 36,
     height: 56,
     backgroundColor: Colors.bg.card,
     borderRadius: 14,

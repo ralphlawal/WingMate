@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -38,7 +39,12 @@ export default function RoleScreen({ navigation }: Props) {
         <Ionicons name="chevron-back" size={24} color={Colors.text.primary} />
       </TouchableOpacity>
 
-      <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         {/* Progress */}
         <View style={styles.progress}>
           {[1, 2, 3, 4].map((step) => (
@@ -51,9 +57,7 @@ export default function RoleScreen({ navigation }: Props) {
 
         <View style={styles.textBlock}>
           <Text style={styles.title}>Who are you tonight?</Text>
-          <Text style={styles.subtitle}>
-            You can change this any time.
-          </Text>
+          <Text style={styles.subtitle}>You can change this any time.</Text>
         </View>
 
         <View style={styles.cards}>
@@ -167,7 +171,7 @@ export default function RoleScreen({ navigation }: Props) {
             size="lg"
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -175,7 +179,13 @@ export default function RoleScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg.primary },
   back: { padding: 20, paddingBottom: 0 },
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 8 },
+  scrollView: { flex: 1, width: "100%" },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+    paddingBottom: 48,
+  },
 
   progress: { flexDirection: "row", gap: 6, marginBottom: 36 },
   progressBar: {
@@ -195,7 +205,7 @@ const styles = StyleSheet.create({
   },
   subtitle: { fontSize: 15, color: Colors.text.muted, lineHeight: 22 },
 
-  cards: { gap: 12 },
+  cards: { gap: 12, marginBottom: 32 },
   card: {
     borderRadius: 20,
     padding: 18,
@@ -262,5 +272,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  footer: { position: "absolute", bottom: 36, left: 24, right: 24 },
+  footer: {},
 });
