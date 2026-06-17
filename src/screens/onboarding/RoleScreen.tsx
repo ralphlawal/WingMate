@@ -22,8 +22,15 @@ const ROLE_DETAIL: Partial<Record<UserRole, { tip: string }>> = {
   wing: { tip: "Help a friend meet someone tonight. Play cupid." },
 };
 
+const WING_REASONS = [
+  "Everyone deserves a little backup.",
+  "to make the introduction easier.",
+  "Some missions are better with a co-pilot.",
+];
+
 export default function RoleScreen({ navigation }: Props) {
   const [selected, setSelected] = useState<UserRole | null>(null);
+  const [wingReason, setWingReason] = useState<string | null>(null);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -96,7 +103,41 @@ export default function RoleScreen({ navigation }: Props) {
                       {config.label}
                     </Text>
                     <Text style={styles.cardDesc}>{config.description}</Text>
-                    {isSelected && (
+                    {isSelected && role === "wing" && (
+                      <View style={styles.reasonBlock}>
+                        <Text style={styles.reasonHeader}>I'm here because</Text>
+                        {WING_REASONS.map((reason) => {
+                          const active = wingReason === reason;
+                          return (
+                            <TouchableOpacity
+                              key={reason}
+                              style={[
+                                styles.reasonChip,
+                                active && {
+                                  backgroundColor: `${config.color}22`,
+                                  borderColor: config.color,
+                                },
+                              ]}
+                              onPress={() => setWingReason(reason)}
+                              activeOpacity={0.75}
+                            >
+                              {active && (
+                                <Ionicons name="checkmark-circle" size={14} color={config.color} />
+                              )}
+                              <Text
+                                style={[
+                                  styles.reasonText,
+                                  active && { color: config.color, fontWeight: "600" },
+                                ]}
+                              >
+                                {reason}
+                              </Text>
+                            </TouchableOpacity>
+                          );
+                        })}
+                      </View>
+                    )}
+                    {isSelected && role !== "wing" && (
                       <Text style={[styles.cardTip, { color: config.color }]}>
                         {detail.tip}
                       </Text>
@@ -121,7 +162,7 @@ export default function RoleScreen({ navigation }: Props) {
           <Button
             label="This is me tonight"
             onPress={() => navigation.navigate("Photo")}
-            disabled={!selected}
+            disabled={!selected || (selected === "wing" && !wingReason)}
             fullWidth
             size="lg"
           />
@@ -192,6 +233,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
+  },
+
+  reasonBlock: { marginTop: 10, gap: 7 },
+  reasonHeader: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: Colors.text.muted,
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+    marginBottom: 2,
+  },
+  reasonChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.border.subtle,
+    backgroundColor: Colors.bg.elevated,
+  },
+  reasonText: {
+    fontSize: 13,
+    color: Colors.text.secondary,
+    lineHeight: 18,
+    flex: 1,
   },
 
   footer: { position: "absolute", bottom: 36, left: 24, right: 24 },

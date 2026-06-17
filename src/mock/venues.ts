@@ -11,7 +11,7 @@ export const MOCK_VENUES: Venue[] = [
     activeCount: 89,
     singlesCount: 52,
     wingsCount: 18,
-    thumbnail: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=600",
+    thumbnail: "https://www.cafeenseine.ie/wp-content/uploads/2024/09/Cafe-en-Seine-043.jpg",
     vibe: ["Lively", "Cocktails", "Great Vibe"],
   },
   {
@@ -24,7 +24,7 @@ export const MOCK_VENUES: Venue[] = [
     activeCount: 41,
     singlesCount: 24,
     wingsCount: 9,
-    thumbnail: "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=600",
+    thumbnail: "https://peruke.ie/wp-content/uploads/2018/03/CM3A8808-1050x700.jpg",
     vibe: ["Cocktails", "Intimate", "Stylish"],
   },
   {
@@ -37,7 +37,7 @@ export const MOCK_VENUES: Venue[] = [
     activeCount: 34,
     singlesCount: 19,
     wingsCount: 7,
-    thumbnail: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600",
+    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Toner%27s_Pub_For_The_Best_Pint_Of_Guinness_In_Dublin_(4955353882).jpg",
     vibe: ["Classic Dublin", "Pints", "Chill"],
   },
   {
@@ -50,7 +50,7 @@ export const MOCK_VENUES: Venue[] = [
     activeCount: 28,
     singlesCount: 15,
     wingsCount: 5,
-    thumbnail: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600",
+    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/6/6a/ODonoghue_pub_Dublin_Ireland.jpg",
     vibe: ["Traditional", "Live Music", "Iconic"],
   },
   {
@@ -63,7 +63,7 @@ export const MOCK_VENUES: Venue[] = [
     activeCount: 22,
     singlesCount: 11,
     wingsCount: 4,
-    thumbnail: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600",
+    thumbnail: "https://images.squarespace-cdn.com/content/v1/5ffdc197eebe5c34a6cacb49/1612025451902-7AGD65OWNLHOV4LMN626/gingerman+front.jpg",
     vibe: ["Craft Beer", "Relaxed", "Good Craic"],
   },
 ];
