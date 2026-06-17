@@ -165,7 +165,7 @@ export default function RoleScreen({ navigation }: Props) {
         <View style={styles.footer}>
           <Button
             label="This is me tonight"
-            onPress={() => navigation.navigate("Photo")}
+            onPress={() => navigation.navigate("Photo", { role: selected! })}
             disabled={!selected || (selected === "wing" && !wingReason)}
             fullWidth
             size="lg"

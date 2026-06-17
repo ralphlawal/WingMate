@@ -19,18 +19,26 @@ type Props = NativeStackScreenProps<OnboardingStackParamList, "Bio">;
 
 const MAX = 160;
 
-const PROMPTS = [
+const SINGLE_PROMPTS = [
   "I'll know it's love if...",
   "The best way to win me over is...",
   "Two truths and a lie...",
   "Currently obsessed with...",
 ];
 
-export default function BioScreen({ navigation }: Props) {
+const WING_PROMPTS = [
+  "They're the type who...",
+  "You'll like them if you...",
+  "Fair warning, they will...",
+  "Best way to start a convo with them...",
+];
+
+export default function BioScreen({ navigation, route }: Props) {
   const [bio, setBio] = useState("");
   const [focused, setFocused] = useState(false);
   const remaining = MAX - bio.length;
   const isValid = bio.trim().length >= 10;
+  const isWing = route.params.role === "wing";
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -52,9 +60,13 @@ export default function BioScreen({ navigation }: Props) {
         </View>
 
         <View style={styles.textBlock}>
-          <Text style={styles.title}>Tell them something real</Text>
+          <Text style={styles.title}>
+            {isWing ? "Introduce your friend" : "Tell them something real"}
+          </Text>
           <Text style={styles.subtitle}>
-            What would you want someone to know before saying hi?
+            {isWing
+              ? "Give people a reason to walk over tonight."
+              : "What would you want someone to know before saying hi?"}
           </Text>
         </View>
 
@@ -63,7 +75,7 @@ export default function BioScreen({ navigation }: Props) {
           <TextInput
             value={bio}
             onChangeText={(t) => t.length <= MAX && setBio(t)}
-            placeholder="Write something that sounds like you..."
+            placeholder={isWing ? "Tell people what makes your friend worth meeting..." : "Write something that sounds like you..."}
             placeholderTextColor={Colors.text.muted}
             multiline
             style={styles.textArea}
@@ -89,7 +101,7 @@ export default function BioScreen({ navigation }: Props) {
         </View>
 
         <View style={styles.prompts}>
-          {PROMPTS.map((prompt) => (
+          {(isWing ? WING_PROMPTS : SINGLE_PROMPTS).map((prompt) => (
             <TouchableOpacity
               key={prompt}
               style={styles.promptChip}

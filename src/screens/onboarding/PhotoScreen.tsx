@@ -24,8 +24,9 @@ const PHOTO_SIZE = Math.min(width, 480) - 48;
 
 const MOCK_PHOTO = "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600";
 
-export default function PhotoScreen({ navigation }: Props) {
+export default function PhotoScreen({ navigation, route }: Props) {
   const [photo, setPhoto] = useState<string | null>(MOCK_PHOTO);
+  const { role } = route.params;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -92,7 +93,7 @@ export default function PhotoScreen({ navigation }: Props) {
         <View style={styles.footer}>
           <Button
             label="Continue"
-            onPress={() => navigation.navigate("Bio")}
+            onPress={() => navigation.navigate("Bio", { role })}
             disabled={!photo}
             fullWidth
             size="lg"

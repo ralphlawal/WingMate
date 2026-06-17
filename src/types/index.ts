@@ -76,8 +76,8 @@ export type OnboardingStackParamList = {
   OTP: { phone: string };
   Name: undefined;
   Role: undefined;
-  Photo: undefined;
-  Bio: undefined;
+  Photo: { role: UserRole };
+  Bio: { role: UserRole };
 };
 
 export type MainTabParamList = {
