@@ -23,7 +23,6 @@ const TABS: { key: FilterTab; label: string }[] = [
   { key: "all", label: "Everyone" },
   { key: "single", label: "Singles" },
   { key: "wing", label: "Wings" },
-  { key: "taken", label: "Taken" },
 ];
 
 export default function VenueDetailScreen({ navigation, route }: Props) {

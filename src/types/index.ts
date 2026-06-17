@@ -1,4 +1,4 @@
-export type UserRole = "single" | "wing" | "taken";
+export type UserRole = "single" | "wing";
 
 export type Gender = "man" | "woman" | "non-binary" | "prefer-not-to-say";
 

@@ -23,17 +23,17 @@ const { width, height } = Dimensions.get("window");
 const MAP_H = Math.round(height * 0.28);
 
 const MAP_DOTS = [
-  { venueId: "venue-1", top: "30%", left: "18%", count: 24, color: Colors.brand.pink, name: "The Grotto" },
-  { venueId: "venue-2", top: "55%", left: "60%", count: 67, color: Colors.brand.pink, name: "Neon Social" },
-  { venueId: "venue-3", top: "20%", left: "72%", count: 11, color: Colors.brand.teal, name: "Café Parallax" },
-  { venueId: "venue-4", top: "68%", left: "30%", count: 41, color: Colors.brand.pink, name: "The Parker" },
-  { venueId: "venue-5", top: "40%", left: "84%", count: 18, color: Colors.brand.teal, name: "Folklore" },
+  { venueId: "venue-1", top: "45%", left: "38%", count: 89, color: Colors.brand.pink, name: "Café en Seine" },
+  { venueId: "venue-2", top: "30%", left: "42%", count: 41, color: Colors.brand.pink, name: "Peruke & Periwig" },
+  { venueId: "venue-3", top: "65%", left: "55%", count: 34, color: Colors.brand.teal, name: "Toners" },
+  { venueId: "venue-4", top: "38%", left: "68%", count: 28, color: Colors.brand.teal, name: "O'Donoghues" },
+  { venueId: "venue-5", top: "70%", left: "72%", count: 22, color: Colors.brand.pink, name: "The Ginger Man" },
 ];
 
 const SCENE_STATS = [
-  { icon: "business-outline" as const, value: "9", label: "venues active" },
-  { icon: "people-outline" as const, value: "163", label: "people out" },
-  { icon: "heart-outline" as const, value: "47", label: "singles nearby" },
+  { icon: "business-outline" as const, value: "5", label: "venues active" },
+  { icon: "people-outline" as const, value: "214", label: "people out" },
+  { icon: "heart-outline" as const, value: "89", label: "singles nearby" },
 ];
 
 export default function HomeScreen({ navigation }: Props) {
@@ -61,7 +61,7 @@ export default function HomeScreen({ navigation }: Props) {
             <Text style={styles.greeting}>Good evening 🌙</Text>
             <View style={styles.locationRow}>
               <Ionicons name="location" size={12} color={Colors.brand.pink} />
-              <Text style={styles.locationText}>New York, NY</Text>
+              <Text style={styles.locationText}>Dawson St, Dublin 2</Text>
             </View>
           </View>
         </View>
@@ -231,7 +231,7 @@ export default function HomeScreen({ navigation }: Props) {
         </View>
 
         {/* Featured venue */}
-        {MOCK_VENUES[1] && (
+        {MOCK_VENUES[0] && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleRow}>
@@ -244,10 +244,10 @@ export default function HomeScreen({ navigation }: Props) {
 
             <TouchableOpacity
               style={styles.featuredCard}
-              onPress={() => navigation.navigate("VenueDetail", { venueId: MOCK_VENUES[1].id })}
+              onPress={() => navigation.navigate("VenueDetail", { venueId: MOCK_VENUES[0].id })}
               activeOpacity={0.88}
             >
-              <Image source={{ uri: MOCK_VENUES[1].thumbnail }} style={styles.featuredImg} />
+              <Image source={{ uri: MOCK_VENUES[0].thumbnail }} style={styles.featuredImg} />
               <LinearGradient
                 colors={["transparent", "rgba(0,0,0,0.85)"]}
                 style={StyleSheet.absoluteFill}
@@ -260,30 +260,30 @@ export default function HomeScreen({ navigation }: Props) {
                   </View>
                 </View>
                 <View style={styles.featuredBottom}>
-                  <Text style={styles.featuredName}>{MOCK_VENUES[1].name}</Text>
-                  <Text style={styles.featuredAddr}>{MOCK_VENUES[1].address}</Text>
+                  <Text style={styles.featuredName}>{MOCK_VENUES[0].name}</Text>
+                  <Text style={styles.featuredAddr}>{MOCK_VENUES[0].address}</Text>
                   <View style={styles.featuredStats}>
                     <View style={styles.featuredStat}>
                       <Text style={[styles.featuredStatNum, { color: Colors.brand.pink }]}>
-                        {MOCK_VENUES[1].singlesCount}
+                        {MOCK_VENUES[0].singlesCount}
                       </Text>
                       <Text style={styles.featuredStatLabel}>singles</Text>
                     </View>
                     <View style={styles.featuredStatDiv} />
                     <View style={styles.featuredStat}>
                       <Text style={[styles.featuredStatNum, { color: Colors.brand.teal }]}>
-                        {MOCK_VENUES[1].wingsCount}
+                        {MOCK_VENUES[0].wingsCount}
                       </Text>
                       <Text style={styles.featuredStatLabel}>wings</Text>
                     </View>
                     <View style={styles.featuredStatDiv} />
                     <View style={styles.featuredStat}>
-                      <Text style={styles.featuredStatNum}>{MOCK_VENUES[1].activeCount}</Text>
+                      <Text style={styles.featuredStatNum}>{MOCK_VENUES[0].activeCount}</Text>
                       <Text style={styles.featuredStatLabel}>total</Text>
                     </View>
                   </View>
                   <View style={styles.vibes}>
-                    {MOCK_VENUES[1].vibe.map((v) => (
+                    {MOCK_VENUES[0].vibe.map((v) => (
                       <View key={v} style={styles.vibeChip}>
                         <Text style={styles.vibeText}>{v}</Text>
                       </View>

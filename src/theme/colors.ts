@@ -15,10 +15,8 @@ export const Colors = {
   role: {
     single: "#FF3B6F",
     wing: "#4ECDC4",
-    taken: "#8B8B9E",
     singleBg: "#FF3B6F20",
     wingBg: "#4ECDC420",
-    takenBg: "#8B8B9E20",
   },
   text: {
     primary: "#FFFFFF",
@@ -51,12 +49,5 @@ export const RoleConfig = {
     bg: Colors.role.wingBg,
     emoji: "🤝",
     description: "I'm helping my friend find someone",
-  },
-  taken: {
-    label: "Taken",
-    color: Colors.role.taken,
-    bg: Colors.role.takenBg,
-    emoji: "💛",
-    description: "Here for the vibes and helping out",
   },
 } as const;

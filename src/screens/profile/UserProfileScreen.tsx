@@ -164,14 +164,6 @@ export default function UserProfileScreen({ navigation, route }: Props) {
               icon={<Text style={{ fontSize: 16 }}>🤝</Text>}
             />
           )}
-          {user.role === "taken" && (
-            <View style={styles.takenCard}>
-              <Text style={styles.takenEmoji}>💛</Text>
-              <Text style={styles.takenText}>
-                {user.name} is taken but loves playing cupid. Say hi — they might know someone.
-              </Text>
-            </View>
-          )}
         </View>
       </ScrollView>
     </View>
@@ -319,17 +311,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   signalBtn: { flex: 1 },
-  takenCard: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 12,
-    backgroundColor: Colors.bg.card,
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.border.subtle,
-  },
-  takenEmoji: { fontSize: 24 },
-  takenText: { flex: 1, color: Colors.text.muted, fontSize: 13, lineHeight: 19 },
 });
