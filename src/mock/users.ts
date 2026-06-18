@@ -69,7 +69,7 @@ export const MOCK_USERS: User[] = [
   {
     id: "user-4",
     name: "Ciarán",
-    age: 30,
+    age: 50,
     bio: "Loves Dawson Street on a Friday. Here winging for my mate Jake — he's hopeless without me.",
     photos: [
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400",

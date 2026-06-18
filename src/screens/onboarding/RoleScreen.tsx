@@ -25,7 +25,7 @@ const ROLE_DETAIL: Partial<Record<UserRole, { tip: string }>> = {
 
 const WING_REASONS = [
   "Everyone deserves a little backup.",
-  "to make the introduction easier.",
+  "To make the introduction easier.",
   "Some missions are better with a co-pilot.",
 ];
 

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,10 +29,20 @@ const TABS: { key: FilterTab; label: string }[] = [
 export default function VenueDetailScreen({ navigation, route }: Props) {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
   const [checkedIn, setCheckedIn] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   const venue = MOCK_VENUES.find((v) => v.id === route.params.venueId) ?? MOCK_VENUES[0];
   const users = MOCK_USERS.filter((u) => u.venueId === venue.id);
   const filtered = activeTab === "all" ? users : users.filter((u) => u.role === activeTab);
+
+  const handleCheckIn = () => {
+    setVerifying(true);
+    // Simulate GPS location verification
+    setTimeout(() => {
+      setVerifying(false);
+      setCheckedIn(true);
+    }, 1800);
+  };
 
   return (
     <View style={styles.container}>
@@ -73,7 +84,7 @@ export default function VenueDetailScreen({ navigation, route }: Props) {
           </View>
         </View>
 
-        {/* Stats */}
+        {/* Stats — always visible so you know it's worth going */}
         <View style={styles.statsRow}>
           {[
             { label: "Here now", value: venue.activeCount, color: Colors.text.primary },
@@ -106,14 +117,27 @@ export default function VenueDetailScreen({ navigation, route }: Props) {
                 <Text style={styles.checkoutLink}>Check out</Text>
               </TouchableOpacity>
             </View>
+          ) : verifying ? (
+            <View style={styles.verifyingBanner}>
+              <ActivityIndicator size="small" color={Colors.brand.pink} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.verifyingText}>Verifying your location…</Text>
+                <Text style={styles.verifyingSub}>Making sure you're actually here</Text>
+              </View>
+            </View>
           ) : (
-            <Button
-              label="Check in here"
-              onPress={() => setCheckedIn(true)}
-              fullWidth
-              size="md"
-              icon={<Ionicons name="location" size={16} color="#fff" />}
-            />
+            <>
+              <Button
+                label="Check in here"
+                onPress={handleCheckIn}
+                fullWidth
+                size="md"
+                icon={<Ionicons name="location" size={16} color="#fff" />}
+              />
+              <Text style={styles.checkinHint}>
+                GPS required · Check in to see who's here
+              </Text>
+            </>
           )}
         </View>
 
@@ -121,72 +145,92 @@ export default function VenueDetailScreen({ navigation, route }: Props) {
         <View style={styles.whoSection}>
           <Text style={styles.whoTitle}>Who's here</Text>
 
-          {/* Filter tabs */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.tabs}
-          >
-            {TABS.map((tab) => {
-              const isActive = activeTab === tab.key;
-              const color =
-                tab.key === "all"
-                  ? Colors.brand.pink
-                  : RoleConfig[tab.key as UserRole]?.color ?? Colors.brand.pink;
-              return (
-                <TouchableOpacity
-                  key={tab.key}
-                  onPress={() => setActiveTab(tab.key)}
-                  style={[
-                    styles.tabChip,
-                    isActive && {
-                      backgroundColor: `${color}20`,
-                      borderColor: color,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[styles.tabText, isActive && { color }]}
-                  >
-                    {tab.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-
-          {/* User grid */}
-          <View style={styles.userGrid}>
-            {filtered.map((user) => (
-              <TouchableOpacity
-                key={user.id}
-                style={styles.userCard}
-                onPress={() =>
-                  navigation.navigate("UserProfile", { userId: user.id })
-                }
-                activeOpacity={0.85}
+          {checkedIn ? (
+            <>
+              {/* Filter tabs */}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.tabs}
               >
-                <View style={styles.userPhotoWrap}>
-                  <Image source={{ uri: user.photos[0] }} style={styles.userPhoto} />
-                  <LinearGradient
-                    colors={["transparent", "rgba(0,0,0,0.8)"]}
-                    style={StyleSheet.absoluteFill}
-                  />
-                  <View style={styles.userBottom}>
-                    <Text style={styles.cardName}>{user.name}, {user.age}</Text>
-                    <RoleBadge role={user.role} size="sm" />
-                  </View>
-                  <View style={styles.onlineDot} />
-                </View>
-              </TouchableOpacity>
-            ))}
+                {TABS.map((tab) => {
+                  const isActive = activeTab === tab.key;
+                  const color =
+                    tab.key === "all"
+                      ? Colors.brand.pink
+                      : RoleConfig[tab.key as UserRole]?.color ?? Colors.brand.pink;
+                  return (
+                    <TouchableOpacity
+                      key={tab.key}
+                      onPress={() => setActiveTab(tab.key)}
+                      style={[
+                        styles.tabChip,
+                        isActive && {
+                          backgroundColor: `${color}20`,
+                          borderColor: color,
+                        },
+                      ]}
+                    >
+                      <Text style={[styles.tabText, isActive && { color }]}>
+                        {tab.label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
 
-            {filtered.length === 0 && (
-              <View style={styles.emptyState}>
-                <Text style={styles.emptyText}>No one here with this filter yet</Text>
+              {/* User grid */}
+              <View style={styles.userGrid}>
+                {filtered.map((user) => (
+                  <TouchableOpacity
+                    key={user.id}
+                    style={styles.userCard}
+                    onPress={() =>
+                      navigation.navigate("UserProfile", { userId: user.id })
+                    }
+                    activeOpacity={0.85}
+                  >
+                    <View style={styles.userPhotoWrap}>
+                      <Image source={{ uri: user.photos[0] }} style={styles.userPhoto} />
+                      <LinearGradient
+                        colors={["transparent", "rgba(0,0,0,0.8)"]}
+                        style={StyleSheet.absoluteFill}
+                      />
+                      <View style={styles.userBottom}>
+                        <Text style={styles.cardName}>{user.name}, {user.age}</Text>
+                        <RoleBadge role={user.role} size="sm" />
+                      </View>
+                      <View style={styles.onlineDot} />
+                    </View>
+                  </TouchableOpacity>
+                ))}
+
+                {filtered.length === 0 && (
+                  <View style={styles.emptyState}>
+                    <Text style={styles.emptyText}>No one here with this filter yet</Text>
+                  </View>
+                )}
               </View>
-            )}
-          </View>
+            </>
+          ) : (
+            /* Locked state — blurred placeholder grid */
+            <View style={styles.lockedWrap}>
+              <View style={styles.lockedGrid}>
+                {[...Array(4)].map((_, i) => (
+                  <View key={i} style={styles.lockedCard} />
+                ))}
+              </View>
+              <View style={styles.lockedOverlay}>
+                <View style={styles.lockedIconWrap}>
+                  <Ionicons name="location-outline" size={28} color={Colors.brand.pink} />
+                </View>
+                <Text style={styles.lockedTitle}>Check in to see profiles</Text>
+                <Text style={styles.lockedSub}>
+                  We verify you're actually here — no remote browsing.
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -297,6 +341,27 @@ const styles = StyleSheet.create({
   checkedInText: { flex: 1, color: Colors.text.primary, fontSize: 14, fontWeight: "500" },
   checkoutLink: { color: Colors.brand.pink, fontSize: 13, fontWeight: "600" },
 
+  verifyingBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    backgroundColor: `${Colors.brand.pink}10`,
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderWidth: 1,
+    borderColor: `${Colors.brand.pink}25`,
+  },
+  verifyingText: { color: Colors.text.primary, fontSize: 14, fontWeight: "600" },
+  verifyingSub: { color: Colors.text.muted, fontSize: 12, marginTop: 2 },
+
+  checkinHint: {
+    textAlign: "center",
+    color: Colors.text.muted,
+    fontSize: 12,
+    marginTop: 10,
+  },
+
   whoSection: { paddingBottom: 24 },
   whoTitle: {
     fontSize: 18,
@@ -355,4 +420,58 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: { color: Colors.text.muted, fontSize: 14 },
+
+  // Locked state
+  lockedWrap: {
+    marginHorizontal: 20,
+    position: "relative",
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  lockedGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    opacity: 0.15,
+  },
+  lockedCard: {
+    width: "47%",
+    height: 200,
+    borderRadius: 18,
+    backgroundColor: Colors.bg.elevated,
+  },
+  lockedOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    paddingHorizontal: 32,
+  },
+  lockedIconWrap: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: `${Colors.brand.pink}15`,
+    borderWidth: 1,
+    borderColor: `${Colors.brand.pink}30`,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  lockedTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: Colors.text.primary,
+    textAlign: "center",
+  },
+  lockedSub: {
+    fontSize: 13,
+    color: Colors.text.muted,
+    textAlign: "center",
+    lineHeight: 19,
+  },
 });
