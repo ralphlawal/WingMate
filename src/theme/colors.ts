@@ -48,6 +48,6 @@ export const RoleConfig = {
     color: Colors.role.wing,
     bg: Colors.role.wingBg,
     emoji: "🤝",
-    description: "I'm helping my friend find someone",
+    description: "Wing for the night",
   },
 } as const;
